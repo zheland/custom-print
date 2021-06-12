@@ -22,7 +22,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! custom-print = "0.0.1"
+//! custom-print = "0.1.0"
 //! ```
 //!
 //! This crate depends on the standard library by default.
@@ -31,7 +31,7 @@
 //!
 //! ```toml
 //! [dependencies.custom-print]
-//! version = "0.0.1"
+//! version = "0.1.0"
 //! default-features = false
 //! features = ["alloc"]
 //! ```

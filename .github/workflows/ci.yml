@@ -146,8 +146,8 @@ jobs:
           command: build
           args: --verbose --all
 
-  build_wasm_bindgen_example:
-    name: Build wasm_bindgen example
+  test_wasm_bindgen_example:
+    name: Test wasm_bindgen example
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -159,5 +159,5 @@ jobs:
       - name: Install Wasm Pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Build
+      - name: Test
         run: wasm-pack test --node | grep -q succeed

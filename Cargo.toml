@@ -1,6 +1,6 @@
 [package]
 name = "custom-print"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Andrey Zheleznov <zheland.net@gmail.com>"]
 edition = "2018"
 description = "Define custom println and dbg macros in wasm and other targets"
