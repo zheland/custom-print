@@ -1,0 +1,16 @@
+[package]
+name = "custom-wasm-bindgen-example"
+version = "0.1.0"
+authors = ["Andrey Zheleznov <zheland.net@gmail.com>"]
+edition = "2018"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.74"
+custom-print = { path = "../.." }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.24"
