@@ -15,4 +15,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests and doc-tests.
 - GitHub CI.
 
-[0.1.0]: https://github.com/zheland/custom_print/releases/tag/v0.1.0
+[0.1.0]: https://github.com/zheland/custom-print/compare/43bef1...v0.1.0
