@@ -20,8 +20,14 @@
 /// [`define_try_print`]: macro.define_try_print.html
 #[macro_export]
 macro_rules! define_print {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_printlike!( $name, ::core::write, expect, $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $( $args:tt )* ) => {
+        $crate::define_printlike!(
+            $( #[$meta] )*
+            $name,
+            ::core::write,
+            expect,
+            $($args)*
+        );
     };
 }
 
@@ -47,8 +53,14 @@ macro_rules! define_print {
 /// [`define_try_println`]: macro.define_try_println.html
 #[macro_export]
 macro_rules! define_println {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_printlike!( $name, ::core::writeln, expect, $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $( $args:tt )* ) => {
+        $crate::define_printlike!(
+            $( #[$meta] )*
+            $name,
+            ::core::writeln,
+            expect,
+            $($args)*
+        );
     };
 }
 
@@ -74,8 +86,13 @@ macro_rules! define_println {
 /// [`define_try_println`]: macro.define_try_println.html
 #[macro_export]
 macro_rules! define_try_print {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_printlike!( $name, ::core::write, try, $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $( $args:tt )* ) => {
+        $crate::define_printlike!(
+            $( #[$meta] )*
+            $name,
+            ::core::write, try,
+            $($args)*
+        );
     };
 }
 
@@ -102,7 +119,13 @@ macro_rules! define_try_print {
 /// [`define_try_print`]: macro.define_try_print.html
 #[macro_export]
 macro_rules! define_try_println {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_printlike!( $name, ::core::writeln, try, $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $( $args:tt )* ) => {
+        $crate::define_printlike!(
+            $( #[$meta] )*
+            $name,
+            ::core::writeln,
+            try,
+            $($args)*
+        );
     };
 }

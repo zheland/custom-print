@@ -158,19 +158,38 @@
 /// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_macros {
-    ( { $( $template:ident $(as $name:ident)? ),* $(,)? }, $($args:tt)* ) => {
-        $crate::_define_macros_impl!( { $( $template $(as $name)? ),* }, $($args)* );
+    (
+        $( #[$meta1:meta] )*
+        { $( $( #[$meta2:meta] )* $template:ident $(as $name:ident)? ),* $(,)? },
+        $( $args:tt )*
+    ) => {
+        $crate::_define_macros_impl!(
+            $( #[$meta1] )*
+            { $( $( #[$meta2] )* $template $( as $name )? ),* },
+            $( $args )*
+        );
     };
 }
 
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _define_macros_impl {
-    ( { $template:ident $(as $name:ident)? $(, $($rest:tt)* )? }, $($args:tt)* ) => {
-        $crate::define_macro!( $template $(as $name)?, $($args)* );
-        $crate::_define_macros_impl!( { $($($rest)*)? }, $($args)* );
+    (
+        $( #[$meta1:meta] )*
+        { $( #[$meta2:meta] )* $template:ident $(as $name:ident)? $(, $($rest:tt)* )? },
+        $( $args:tt )*
+    ) => {
+        $crate::define_macro!(
+            $( #[$meta1] )*
+            $( #[$meta2] )*
+            $template $(as $name)?, $($args)*
+        );
+        $crate::_define_macros_impl!(
+            $( #[$meta1] )*
+            { $($($rest)*)? }, $($args)*
+        );
     };
-    ( { $(,)? } $(, $($args:tt)* )? ) => {};
+    ( $( #[$meta1:meta] )* { $(,)? } $(, $( $args:tt )* )? ) => {};
 }
 
 /// Defines custom `print`-like and `dbg`-like macro.
@@ -329,35 +348,93 @@ macro_rules! _define_macros_impl {
 /// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_macro {
-    ( print       as $name:ident, $($args:tt)* ) => {$crate::define_print!  ($name,$($args)*);};
-    ( println     as $name:ident, $($args:tt)* ) => {$crate::define_println!($name,$($args)*);};
-    ( dbg         as $name:ident, $($args:tt)* ) => {$crate::define_dbg!    ($name,$($args)*);};
-    ( flush       as $name:ident, $($args:tt)* ) => {$crate::define_flush!  ($name,$($args)*);};
-    ( try_print   as $name:ident, $($args:tt)* ) => {$crate::define_try_print!  ($name,$($args)*);};
-    ( try_println as $name:ident, $($args:tt)* ) => {$crate::define_try_println!($name,$($args)*);};
-    ( try_dbg     as $name:ident, $($args:tt)* ) => {$crate::define_try_dbg!    ($name,$($args)*);};
-    ( try_flush   as $name:ident, $($args:tt)* ) => {$crate::define_try_flush!  ($name,$($args)*);};
+    ( $( #[$meta:meta] )* print       as $name:ident, $( $args:tt )* ) => {
+        $crate::define_print!      ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* println     as $name:ident, $( $args:tt )* ) => {
+        $crate::define_println!    ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* dbg         as $name:ident, $( $args:tt )* ) => {
+        $crate::define_dbg!        ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* flush       as $name:ident, $( $args:tt )* ) => {
+        $crate::define_flush!      ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* try_print   as $name:ident, $( $args:tt )* ) => {
+        $crate::define_try_print!  ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* try_println as $name:ident, $( $args:tt )* ) => {
+        $crate::define_try_println!( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* try_dbg     as $name:ident, $( $args:tt )* ) => {
+        $crate::define_try_dbg!    ( $( #[$meta] )* $name, $( $args )* )
+    };
+    ( $( #[$meta:meta] )* try_flush   as $name:ident, $( $args:tt )* ) => {
+        $crate::define_try_flush!  ( $( #[$meta] )* $name, $( $args )* )
+    };
 
-    ( print,        $($args:tt)* ) => { $crate::define_print!  ( print,        $($args)* ); };
-    ( eprint,       $($args:tt)* ) => { $crate::define_print!  ( eprint,       $($args)* ); };
-    ( cprint,       $($args:tt)* ) => { $crate::define_print!  ( cprint,       $($args)* ); };
-    ( ceprint,      $($args:tt)* ) => { $crate::define_print!  ( ceprint,      $($args)* ); };
-    ( println,      $($args:tt)* ) => { $crate::define_println!( println,      $($args)* ); };
-    ( eprintln,     $($args:tt)* ) => { $crate::define_println!( eprintln,     $($args)* ); };
-    ( cprintln,     $($args:tt)* ) => { $crate::define_println!( cprintln,     $($args)* ); };
-    ( ceprintln,    $($args:tt)* ) => { $crate::define_println!( ceprintln,    $($args)* ); };
-    ( dbg,          $($args:tt)* ) => { $crate::define_dbg!    ( dbg,          $($args)* ); };
-    ( cdbg,         $($args:tt)* ) => { $crate::define_dbg!    ( cdbg,         $($args)* ); };
-    ( edbg,         $($args:tt)* ) => { $crate::define_dbg!    ( edbg,         $($args)* ); };
-    ( flush,        $($args:tt)* ) => { $crate::define_flush!  ( flush,        $($args)* ); };
-    ( eflush,       $($args:tt)* ) => { $crate::define_flush!  ( eflush,       $($args)* ); };
+    ( $( #[$meta:meta] )* print,        $( $args:tt )* ) => {
+        $crate::define_print!  ( $( #[$meta] )* print,        $( $args )* );
+    };
+    ( $( #[$meta:meta] )* eprint,       $( $args:tt )* ) => {
+        $crate::define_print!  ( $( #[$meta] )* eprint,       $( $args )* );
+    };
+    ( $( #[$meta:meta] )* cprint,       $( $args:tt )* ) => {
+        $crate::define_print!  ( $( #[$meta] )* cprint,       $( $args )* );
+    };
+    ( $( #[$meta:meta] )* ceprint,      $( $args:tt )* ) => {
+        $crate::define_print!  ( $( #[$meta] )* ceprint,      $( $args )* );
+    };
+    ( $( #[$meta:meta] )* println,      $( $args:tt )* ) => {
+        $crate::define_println!( $( #[$meta] )* println,      $( $args )* );
+    };
+    ( $( #[$meta:meta] )* eprintln,     $( $args:tt )* ) => {
+         $crate::define_println!( $( #[$meta] )* eprintln,     $( $args )* );
+    };
+    ( $( #[$meta:meta] )* cprintln,     $( $args:tt )* ) => {
+        $crate::define_println!( $( #[$meta] )* cprintln,     $( $args )* );
+    };
+    ( $( #[$meta:meta] )* ceprintln,    $( $args:tt )* ) => {
+        $crate::define_println!( $( #[$meta] )* ceprintln,    $( $args )* );
+    };
+    ( $( #[$meta:meta] )* dbg,          $( $args:tt )* ) => {
+        $crate::define_dbg!    ( $( #[$meta] )* dbg,          $( $args )* );
+    };
+    ( $( #[$meta:meta] )* edbg,         $( $args:tt )* ) => {
+        $crate::define_dbg!    ( $( #[$meta] )* edbg,         $( $args )* );
+    };
+    ( $( #[$meta:meta] )* cdbg,         $( $args:tt )* ) => {
+        $crate::define_dbg!    ( $( #[$meta] )* cdbg,         $( $args )* );
+    };
+    ( $( #[$meta:meta] )* flush,        $( $args:tt )* ) => {
+        $crate::define_flush!  ( $( #[$meta] )* flush,        $( $args )* );
+    };
+    ( $( #[$meta:meta] )* eflush,       $( $args:tt )* ) => {
+        $crate::define_flush!  ( $( #[$meta] )* eflush,       $( $args )* );
+    };
 
-    ( try_print,    $($args:tt)* ) => { $crate::define_try_print!  ( try_print,    $($args)* ); };
-    ( try_eprint,   $($args:tt)* ) => { $crate::define_try_print!  ( try_eprint,   $($args)* ); };
-    ( try_println,  $($args:tt)* ) => { $crate::define_try_println!( try_println,  $($args)* ); };
-    ( try_eprintln, $($args:tt)* ) => { $crate::define_try_println!( try_eprintln, $($args)* ); };
-    ( try_dbg,      $($args:tt)* ) => { $crate::define_try_dbg!    ( try_dbg,      $($args)* ); };
-    ( try_edbg,     $($args:tt)* ) => { $crate::define_try_dbg!    ( try_edbg,     $($args)* ); };
-    ( try_flush,    $($args:tt)* ) => { $crate::define_try_flush!  ( try_flush,    $($args)* ); };
-    ( try_eflush,   $($args:tt)* ) => { $crate::define_try_flush!  ( try_eflush,   $($args)* ); };
+    ( $( #[$meta:meta] )* try_print,    $( $args:tt )* ) => {
+        $crate::define_try_print!  ( $( #[$meta] )* try_print,    $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_eprint,   $( $args:tt )* ) => {
+        $crate::define_try_print!  ( $( #[$meta] )* try_eprint,   $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_println,  $( $args:tt )* ) => {
+        $crate::define_try_println!( $( #[$meta] )* try_println,  $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_eprintln, $( $args:tt )* ) => {
+        $crate::define_try_println!( $( #[$meta] )* try_eprintln, $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_dbg,      $( $args:tt )* ) => {
+        $crate::define_try_dbg!    ( $( #[$meta] )* try_dbg,      $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_edbg,     $( $args:tt )* ) => {
+        $crate::define_try_dbg!    ( $( #[$meta] )* try_edbg,     $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_flush,    $( $args:tt )* ) => {
+        $crate::define_try_flush!  ( $( #[$meta] )* try_flush,    $( $args )* );
+    };
+    ( $( #[$meta:meta] )* try_eflush,   $( $args:tt )* ) => {
+        $crate::define_try_flush!  ( $( #[$meta] )* try_eflush,   $( $args )* );
+    };
 }

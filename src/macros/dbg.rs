@@ -26,8 +26,15 @@
 /// [`define_try_dbg`]: macro.define_try_dbg.html
 #[macro_export]
 macro_rules! define_dbg {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_dbglike!( $name, ::core::writeln, expect, ":#?", $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $($args:tt)* ) => {
+        $crate::define_dbglike!(
+            $( #[$meta] )*
+            $name,
+            ::core::writeln,
+            expect,
+            ":#?",
+            $($args)*
+        );
     };
 }
 
@@ -60,7 +67,14 @@ macro_rules! define_dbg {
 /// [`define_dbg`]: macro.define_dbg.html
 #[macro_export]
 macro_rules! define_try_dbg {
-    ( $name:ident, $($args:tt)* ) => {
-        $crate::define_dbglike!( $name, ::core::writeln, try, ":#?", $($args)* );
+    ( $( #[$meta:meta] )* $name:ident, $($args:tt)* ) => {
+        $crate::define_dbglike!(
+            $( #[$meta] )*
+            $name,
+            ::core::writeln,
+            try,
+            ":#?",
+            $($args)*
+        );
     };
 }

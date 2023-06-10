@@ -27,14 +27,40 @@
 /// [`define_writer`]: macro.define_writer.html
 #[macro_export]
 macro_rules! define_dbglike {
-    ( $name:ident, $macro:path, expect, $format:literal, $($args:tt)* ) => {
+    (
+        $( #[$meta:meta] )*
+        $name:ident,
+        $macro:path,
+        expect,
+        $format:literal,
+        $($args:tt)*
+    ) => {
         $crate::_define_dbglike_impl!(
-            ($), $name, $macro, expect, $format, $crate::define_writer!($($args)*)
+            ($),
+            $( #[$meta] )*,
+            $name,
+            $macro,
+            expect,
+            $format,
+            $crate::define_writer!($($args)*)
         );
     };
-    ( $name:ident, $macro:path, try, $format:literal, $($args:tt)* ) => {
+    (
+        $( #[$meta:meta] )*
+        $name:ident,
+        $macro:path,
+        try,
+        $format:literal,
+        $($args:tt)*
+    ) => {
         $crate::_define_dbglike_impl!(
-            ($), $name, $macro, try, $format, $crate::define_try_writer!($($args)*)
+            ($),
+            $( #[$meta] )*,
+            $name,
+            $macro,
+            try,
+            $format,
+            $crate::define_try_writer!($($args)*)
         );
     };
 }
@@ -42,7 +68,16 @@ macro_rules! define_dbglike {
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _define_dbglike_impl {
-    ( ($d:tt), $name:ident, $macro:path, $handler:tt, $format:literal, $writer:expr ) => {
+    (
+        ($d:tt),
+        $( #[$meta:meta] )*,
+        $name:ident,
+        $macro:path,
+        $handler:tt,
+        $format:literal,
+        $writer:expr
+    ) => {
+        $( #[$meta] )*
         #[allow(unused_macros)]
         macro_rules! $name {
             // Dummy comment below is used to avoid rustfmt formatting bug.

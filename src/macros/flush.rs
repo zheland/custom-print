@@ -45,7 +45,9 @@
 /// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_flush {
-    ( $name:ident, $($args:tt)* ) => {
+    ( $( #[$meta:meta] )* $name:ident, $($args:tt)* ) => {
+        $( #[$meta] )*
+        #[allow(unused_macros)]
         macro_rules! $name {
             () => {
                 $crate::define_writer!($($args)*).flush().expect("failed flushing")
@@ -99,7 +101,9 @@ macro_rules! define_flush {
 /// ```
 #[macro_export]
 macro_rules! define_try_flush {
-    ( $name:ident, $($args:tt)* ) => {
+    ( $( #[$meta:meta] )* $name:ident, $($args:tt)* ) => {
+        $( #[$meta] )*
+        #[allow(unused_macros)]
         macro_rules! $name {
             () => {
                 $crate::define_try_writer!($($args)*).flush()
