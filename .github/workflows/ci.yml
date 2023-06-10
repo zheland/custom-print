@@ -146,6 +146,54 @@ jobs:
           command: build
           args: --verbose --all
 
+  test_re_export:
+    name: Test re-export
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./tests/re-export
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Test
+        uses: actions-rs/cargo@v1
+        continue-on-error: true
+        with:
+          command: test
+          args: --verbose --all
+
+  test_use_re_exported:
+    name: Test use-re-exported
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./tests/use-re-exported
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Test
+        uses: actions-rs/cargo@v1
+        continue-on-error: true
+        with:
+          command: test
+          args: --verbose --all
+
   test_wasm_bindgen_example:
     name: Test wasm_bindgen example
     runs-on: ubuntu-latest

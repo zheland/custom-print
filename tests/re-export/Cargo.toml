@@ -1,0 +1,12 @@
+[package]
+name = "re-export-test"
+version = "0.1.0"
+authors = ["Andrey Zheleznov <zheland.net@gmail.com>"]
+edition = "2021"
+publish = false
+
+[dependencies]
+once_cell = "1.18.0"
+
+[dependencies.custom-print]
+path = "../.."
