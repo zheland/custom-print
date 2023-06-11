@@ -2,7 +2,7 @@
 name = "no-std-test"
 version = "0.1.0"
 authors = ["Andrey Zheleznov <zheland.net@gmail.com>"]
-edition = "2018"
+edition = "2021"
 publish = false
 
 [dependencies.custom-print]

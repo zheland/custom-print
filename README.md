@@ -4,7 +4,7 @@
 [![Latest Version](https://img.shields.io/crates/v/custom-print.svg)](https://crates.io/crates/custom-print)
 [![Documentation](https://docs.rs/custom-print/badge.svg)](https://docs.rs/custom-print)
 [![GitHub license](https://img.shields.io/crates/l/custom-print)](https://github.com/zheland/custom-print/#license)
-[![Rust Version](https://img.shields.io/badge/rustc-1.52+-lightgray.svg)](https://blog.rust-lang.org/2020/01/30/Rust-1.52.0.html)
+[![Rust Version](https://img.shields.io/badge/rustc-1.60+-lightgray.svg)](https://blog.rust-lang.org/2022/04/07/Rust-1.60.0.html)
 
 The `custom-print` crate helps you to define `print`, `println` and `dbg` macros
 in wasm and customize them for other targets without any dependencies.
