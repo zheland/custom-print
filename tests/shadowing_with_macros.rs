@@ -18,6 +18,15 @@ fn write(value: &str) {
     chunks.push(value.to_string());
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!({ cprint, cprintln }, concat, crate::write);
 macro_rules! print { ($($args:tt)*) => { cprint!($($args)*); } }
 macro_rules! println { ($($args:tt)*) => { cprintln!($($args)*); } }
@@ -25,18 +34,18 @@ macro_rules! println { ($($args:tt)*) => { cprintln!($($args)*); } }
 pub mod submodule {
     #[test]
     fn test_shadowing_with_macros_in_submodule() {
-        use crate::take_chunks;
+        use crate::{black_box, take_chunks};
 
         print!("first");
         assert_eq!(take_chunks(), &["first"]);
-        print!("first {}\nthird\n", "second");
+        print!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n"]);
 
         println!();
         assert_eq!(take_chunks(), &["\n"]);
         println!("first");
         assert_eq!(take_chunks(), &["first\n"]);
-        println!("first {}\nthird\n", "second");
+        println!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n\n"]);
     }
 }

@@ -46,6 +46,15 @@ fn clear_written() {
     written.clear();
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!(
     { print, println, dbg, flush },
     &mut *LINE_STDOUT.lock().unwrap() as &mut dyn ::std::io::Write
@@ -54,14 +63,14 @@ custom_print::define_macros!(
 pub mod submodule {
     #[test]
     fn test_buf_writer() {
-        use crate::{clear_written, get_buffered, get_written, LINE_STDOUT};
+        use crate::{black_box, clear_written, get_buffered, get_written, LINE_STDOUT};
         use core::iter::repeat;
         use std::string::String;
 
         print!("first");
         assert_eq!(get_written(), "");
         assert_eq!(get_buffered(), "first");
-        print!("first {}\nthird", "second");
+        print!("first {}\nthird", black_box("second"));
         assert_eq!(get_written(), "");
         assert_eq!(get_buffered(), "firstfirst second\nthird");
         println!();

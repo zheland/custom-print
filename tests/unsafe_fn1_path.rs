@@ -16,6 +16,15 @@ fn take_chunks() -> Vec<String> {
     take(&mut CHUNKS.lock().unwrap())
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 pub mod first_mod {
     use crate::CHUNKS;
 
@@ -31,18 +40,18 @@ custom_print::define_macros!({ print, println }, concat, unsafe fn (crate::first
 mod submodule {
     #[test]
     fn test_string_writer() {
-        use crate::take_chunks;
+        use crate::{black_box, take_chunks};
 
         print!("first");
         assert_eq!(take_chunks(), &["first"]);
-        print!("first {}\nthird\n", "second");
+        print!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n"]);
 
         println!();
         assert_eq!(take_chunks(), &["\n"]);
         println!("first");
         assert_eq!(take_chunks(), &["first\n"]);
-        println!("first {}\nthird\n", "second");
+        println!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n\n"]);
     }
 }

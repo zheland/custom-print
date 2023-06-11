@@ -23,86 +23,142 @@ fn write_fn(value: &[u8]) {
     chunks.push(from_utf8(value).unwrap().to_string());
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!({ print, println, dbg }, io, crate::write_fn);
 
 pub mod submodule {
     #[test]
     fn test_io_writer() {
-        use crate::take_chunks;
+        use crate::{black_box, take_chunks};
+        use std::format;
         use std::string::ToString;
 
         let file = ::core::file!();
 
         print!("first");
         assert_eq!(take_chunks(), &["first"]);
-        print!("first {}\nthird\n", "second");
+        print!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first ", "second", "\nthird\n"]);
 
         println!();
         assert_eq!(take_chunks(), &["\n"]);
         println!("first");
         assert_eq!(take_chunks(), &["first\n"]);
-        println!("first {}\nthird\n", "second");
+        println!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first ", "second", "\nthird\n\n"]);
 
         let second_var = "second";
         let (output, line) = (dbg!("first", second_var), ::core::line!().to_string());
         assert_eq!(output, ("first", "second"));
-        assert_eq!(
-            take_chunks(),
-            &[
-                "[",
-                file,
-                ":",
-                &line,
-                "] ",
-                "\"first\"",
-                " = ",
-                "\"",
-                "first",
-                "\"",
-                "\n",
-                "[",
-                file,
-                ":",
-                &line,
-                "] ",
-                "second_var",
-                " = ",
-                "\"",
-                "second",
-                "\"",
-                "\n",
-            ]
-        );
+        let chunks = take_chunks();
+        if chunks[0] == "[" {
+            // rust version <= 1.70
+            assert_eq!(
+                chunks,
+                &[
+                    "[",
+                    file,
+                    ":",
+                    &line,
+                    "] ",
+                    "\"first\"",
+                    " = ",
+                    "\"",
+                    "first",
+                    "\"",
+                    "\n",
+                    "[",
+                    file,
+                    ":",
+                    &line,
+                    "] ",
+                    "second_var",
+                    " = ",
+                    "\"",
+                    "second",
+                    "\"",
+                    "\n",
+                ]
+            );
+        } else {
+            // rust version >= 1.71
+            assert_eq!(
+                chunks,
+                &[
+                    &format!("[{file}:{line}] \"first\" = "),
+                    "\"",
+                    "first",
+                    "\"",
+                    "\n",
+                    &format!("[{file}:{line}] second_var = "),
+                    "\"",
+                    "second",
+                    "\"",
+                    "\n",
+                ]
+            );
+        }
 
         let second_var = "second";
         let (output, line) = (dbg!(("first", second_var)), ::core::line!().to_string());
         assert_eq!(output, ("first", "second"));
-        assert_eq!(
-            take_chunks(),
-            &[
-                "[",
-                file,
-                ":",
-                &line,
-                "] ",
-                "(\"first\", second_var)",
-                " = ",
-                "(\n",
-                "    ",
-                "\"",
-                "first",
-                "\"",
-                ",\n",
-                "    ",
-                "\"",
-                "second",
-                "\"",
-                ",\n",
-                ")",
-                "\n"
-            ]
-        );
+        let chunks = take_chunks();
+        if chunks[0] == "[" {
+            // rust version <= 1.70
+            assert_eq!(
+                chunks,
+                &[
+                    "[",
+                    file,
+                    ":",
+                    &line,
+                    "] ",
+                    "(\"first\", second_var)",
+                    " = ",
+                    "(\n",
+                    "    ",
+                    "\"",
+                    "first",
+                    "\"",
+                    ",\n",
+                    "    ",
+                    "\"",
+                    "second",
+                    "\"",
+                    ",\n",
+                    ")",
+                    "\n"
+                ]
+            );
+        } else {
+            // rust version >= 1.71
+            assert_eq!(
+                chunks,
+                &[
+                    &format!("[{file}:{line}] (\"first\", second_var) = "),
+                    "(\n",
+                    "    ",
+                    "\"",
+                    "first",
+                    "\"",
+                    ",\n",
+                    "    ",
+                    "\"",
+                    "second",
+                    "\"",
+                    ",\n",
+                    ")",
+                    "\n"
+                ]
+            );
+        }
     }
 }

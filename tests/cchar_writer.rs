@@ -26,18 +26,27 @@ fn write_fn(c_str: *const c_char) {
     chunks.push(string);
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!({ println, try_println }, fmt, crate::write_fn);
 
 pub mod submodule {
     #[test]
     fn test_cchar_writer() {
-        use crate::take_chunks;
+        use crate::{black_box, take_chunks};
 
         println!();
         assert_eq!(take_chunks(), &["\n"]);
         println!("first");
         assert_eq!(take_chunks(), &["first\n"]);
-        println!("first {}\nthird\n", "second");
+        println!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first ", "second", "\nthird\n\n"]);
     }
 }

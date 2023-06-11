@@ -26,12 +26,21 @@ fn write_fn(value: &[u8]) -> usize {
     value.len().min(MAX_CHUNK_LEN.load(Ordering::Relaxed))
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!({ print, println, dbg }, io, crate::write_fn);
 
 pub mod submodule {
     #[test]
     fn test_io_partial_writer() {
-        use crate::{take_chunks, MAX_CHUNK_LEN};
+        use crate::{black_box, take_chunks, MAX_CHUNK_LEN};
         use std::sync::atomic::Ordering;
 
         MAX_CHUNK_LEN.store(4, Ordering::Relaxed);
@@ -39,22 +48,43 @@ pub mod submodule {
         assert_eq!(take_chunks(), &["first", "t"]);
 
         MAX_CHUNK_LEN.store(2, Ordering::Relaxed);
-        print!("first {}\nthird\n", "second");
-        assert_eq!(
-            take_chunks(),
-            &[
-                "first ",
-                "rst ",
-                "t ",
-                "second",
-                "cond",
-                "nd",
-                "\nthird\n",
-                "hird\n",
-                "rd\n",
-                "\n"
-            ]
-        );
+        print!("first {}\nthird\n", black_box("second"));
+        let chunks = take_chunks();
+        if chunks[0] == "first " {
+            // rust version <= 1.70
+            assert_eq!(
+                chunks,
+                [
+                    "first ",
+                    "rst ",
+                    "t ",
+                    "second",
+                    "cond",
+                    "nd",
+                    "\nthird\n",
+                    "hird\n",
+                    "rd\n",
+                    "\n"
+                ]
+            );
+        } else {
+            // rust version >= 1.71
+            assert_eq!(
+                chunks,
+                [
+                    "first second\nthird\n",
+                    "rst second\nthird\n",
+                    "t second\nthird\n",
+                    "second\nthird\n",
+                    "cond\nthird\n",
+                    "nd\nthird\n",
+                    "\nthird\n",
+                    "hird\n",
+                    "rd\n",
+                    "\n"
+                ]
+            );
+        }
 
         println!();
         assert_eq!(take_chunks(), &["\n"]);

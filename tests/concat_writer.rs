@@ -22,26 +22,35 @@ fn write(value: &str) {
     chunks.push(value.to_string());
 }
 
+#[inline(never)]
+fn black_box<D>(input: D) -> D {
+    unsafe {
+        let output = std::ptr::read_volatile(&input);
+        std::mem::forget(input);
+        output
+    }
+}
+
 custom_print::define_macros!({ print, println, dbg }, concat, crate::write);
 
 pub mod submodule {
     #[test]
     fn test_string_writer() {
-        use crate::take_chunks;
+        use crate::{black_box, take_chunks};
         use std::format;
 
         let file = ::core::file!();
 
         let () = print!("first");
         assert_eq!(take_chunks(), &["first"]);
-        let () = print!("first {}\nthird\n", "second");
+        let () = print!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n"]);
 
         let () = println!();
         assert_eq!(take_chunks(), &["\n"]);
         let () = println!("first");
         assert_eq!(take_chunks(), &["first\n"]);
-        let () = println!("first {}\nthird\n", "second");
+        let () = println!("first {}\nthird\n", black_box("second"));
         assert_eq!(take_chunks(), &["first second\nthird\n\n"]);
 
         let second_var = "second";
