@@ -12,7 +12,7 @@ use once_cell::sync::Lazy;
 
 static WRITTEN: Lazy<Mutex<String>> = Lazy::new(Mutex::default);
 static LINE_STDOUT: Lazy<Mutex<BufWriter<ChunkWriter>>> =
-    Lazy::new(|| Mutex::new(BufWriter::new(ChunkWriter::default())));
+    Lazy::new(|| Mutex::new(BufWriter::new(ChunkWriter)));
 
 #[derive(Clone, Debug, Default)]
 struct ChunkWriter;
@@ -64,8 +64,6 @@ pub mod submodule {
     #[test]
     fn test_buf_writer() {
         use crate::{black_box, clear_written, get_buffered, get_written, LINE_STDOUT};
-        use core::iter::repeat;
-        use std::string::String;
 
         print!("first");
         assert_eq!(get_written(), "");
@@ -83,7 +81,7 @@ pub mod submodule {
         clear_written();
 
         let capacity = LINE_STDOUT.lock().unwrap().capacity();
-        let data = repeat("\n").take(capacity / 2 + 1).collect::<String>();
+        let data = "\n".repeat(capacity / 2 + 1);
         print!("{}", data);
         let written = get_written();
         assert_eq!(written.len(), 0);

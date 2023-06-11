@@ -13,7 +13,7 @@ use once_cell::sync::Lazy;
 
 static CHUNKS: Lazy<Mutex<Vec<String>>> = Lazy::new(Mutex::default);
 static LINE_STDOUT: Lazy<Mutex<LineWriter<ChunkWriter>>> =
-    Lazy::new(|| Mutex::new(LineWriter::new(ChunkWriter::default())));
+    Lazy::new(|| Mutex::new(LineWriter::new(ChunkWriter)));
 
 #[derive(Clone, Debug, Default)]
 struct ChunkWriter;

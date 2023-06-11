@@ -33,8 +33,7 @@ pub mod submodule {
         let file = ::core::file!();
         let second_var = "second";
 
-        let (output, line) = (dbg!(), ::core::line!());
-        assert_eq!(output, ());
+        let ((), line) = (dbg!(), ::core::line!());
         assert_eq!(take_chunks(), &[format!("[{}:{}]\n", file, line)]);
 
         let (output, line) = (dbg!("first"), ::core::line!());

@@ -27,6 +27,7 @@ fn black_box<D>(input: D) -> D {
 
 pub mod ffi_decls {
     #[no_mangle]
+    #[allow(clippy::not_unsafe_ptr_arg_deref)]
     pub extern "C" fn write_ptr_len(ptr: *const u8, len: usize) {
         use core::slice;
         use core::str;

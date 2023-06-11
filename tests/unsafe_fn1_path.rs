@@ -28,6 +28,7 @@ fn black_box<D>(input: D) -> D {
 pub mod first_mod {
     use crate::CHUNKS;
 
+    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn write(value: &str) {
         use std::string::ToString;
         let mut chunks = CHUNKS.lock().unwrap();
