@@ -1,9 +1,14 @@
 # custom-print wasm-bindgen example
+## Setup
 
-You can build the example locally with:
+* Install `npm`.
+* Run `npm update --force`.
+* Run `npm install webpack-dev-server`.
 
-```
-$ npm run serve
-```
+## Usage
 
-and then visiting http://localhost:8080 in a browser should run the example!
+* Run `npm run serve`.
+* Visit http://localhost:8080 in a browser.
+* Open browser Developer Tools (usually with F12).
+* Open Console in Developer Tools.
+* Console contains info messages, warnings and an error with backtrace.
