@@ -3,12 +3,12 @@
 /// If unsafe function specified as argument
 /// it just creates an `FnMut` wrapper that calls unsafe fn in unsafe block.
 /// The function can be specified by identifier or by braced full path.
-/// See [Sefety](#sefety) section for important details about safety.
+/// See [Safety](#safety) section for important details about safety.
 ///
 /// If extern function specified as argument
 /// it creates extern block with this function and
 /// creates an `FnMut` wrapper that calls unsafe fn in unsafe block.
-/// See [Sefety](#sefety) section for important details about safety.
+/// See [Safety](#safety) section for important details about safety.
 ///
 /// If an expression given as argument, the macro just returns it as a result.
 ///
