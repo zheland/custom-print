@@ -39,7 +39,7 @@ pub mod submodule {
         use crate::{black_box, take_chunks};
         use std::format;
 
-        let file = ::core::file!();
+        let file = file!();
 
         let () = print!("first");
         assert_eq!(take_chunks(), &["first"]);
@@ -54,7 +54,7 @@ pub mod submodule {
         assert_eq!(take_chunks(), &["first second\nthird\n\n"]);
 
         let second_var = "second";
-        let (output, line) = (dbg!("first", second_var), ::core::line!());
+        let (output, line) = (dbg!("first", second_var), line!());
         assert_eq!(output, ("first", "second"));
         assert_eq!(
             take_chunks(),
@@ -65,7 +65,7 @@ pub mod submodule {
         );
 
         let second_var = "second";
-        let (output, line) = (dbg!(("first", second_var)), ::core::line!());
+        let (output, line) = (dbg!(("first", second_var)), line!());
         assert_eq!(output, ("first", "second"));
         assert_eq!(
             take_chunks(),

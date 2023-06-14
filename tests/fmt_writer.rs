@@ -41,7 +41,7 @@ pub mod submodule {
         use std::format;
         use std::string::ToString;
 
-        let file = ::core::file!();
+        let file = file!();
 
         print!("first");
         assert_eq!(take_chunks(), &["first"]);
@@ -56,7 +56,7 @@ pub mod submodule {
         assert_eq!(take_chunks(), &["first ", "second", "\nthird\n\n"]);
 
         let second_var = "second";
-        let (output, line) = (dbg!("first", second_var), ::core::line!().to_string());
+        let (output, line) = (dbg!("first", second_var), line!().to_string());
         assert_eq!(output, ("first", "second"));
         let chunks = take_chunks();
         if chunks[0] == "[" {
@@ -108,7 +108,7 @@ pub mod submodule {
         }
 
         let second_var = "second";
-        let (output, line) = (dbg!(("first", second_var)), ::core::line!().to_string());
+        let (output, line) = (dbg!(("first", second_var)), line!().to_string());
         assert_eq!(output, ("first", "second"));
         if chunks[0] == "[" {
             // rust version <= 1.70

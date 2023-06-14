@@ -31,12 +31,12 @@ mod submodule {
     fn test_panic_hook() {
         use std::format;
 
-        let file = ::core::file!();
+        let file = file!();
         let line = AtomicU32::new(0);
         init_panic_hook();
 
         let result = catch_unwind(|| {
-            line.store(::core::line!() + 1, Ordering::Relaxed);
+            line.store(line!() + 1, Ordering::Relaxed);
             assert_eq!(1, 2);
         });
         let _ = take_hook();

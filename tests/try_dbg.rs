@@ -30,28 +30,28 @@ pub mod submodule {
         use crate::take_chunks;
         use std::format;
 
-        let file = ::core::file!();
+        let file = file!();
         let second_var = "second";
 
-        let (output, line) = (try_dbg!(), ::core::line!());
+        let (output, line) = (try_dbg!(), line!());
         assert_eq!(output, Ok(()));
         assert_eq!(take_chunks(), &[format!("[{}:{}]\n", file, line)]);
 
-        let (output, line) = (try_dbg!("first"), ::core::line!());
+        let (output, line) = (try_dbg!("first"), line!());
         assert_eq!(output, Ok("first"));
         assert_eq!(
             take_chunks(),
             &[format!("[{}:{}] \"first\" = \"first\"\n", file, line)]
         );
 
-        let (output, line) = (try_dbg!(second_var), ::core::line!());
+        let (output, line) = (try_dbg!(second_var), line!());
         assert_eq!(output, Ok("second"));
         assert_eq!(
             take_chunks(),
             &[format!("[{}:{}] second_var = \"second\"\n", file, line)]
         );
 
-        let (output, line) = (try_dbg!("first", second_var), ::core::line!());
+        let (output, line) = (try_dbg!("first", second_var), line!());
         assert_eq!(output, Ok(("first", "second")));
         assert_eq!(
             take_chunks(),
@@ -62,7 +62,7 @@ pub mod submodule {
         );
 
         let second_var = second_var;
-        let (output, line) = (try_dbg!(("first", second_var)), ::core::line!());
+        let (output, line) = (try_dbg!(("first", second_var)), line!());
         assert_eq!(output, Ok(("first", "second")));
         assert_eq!(
             take_chunks(),
