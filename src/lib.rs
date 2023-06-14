@@ -102,8 +102,7 @@
 //!
 //! Macro generation macros support specifying custom attributes, so you can
 //! re-export the generated macros and use them in other crates:
-#![cfg_attr(feature = "std", doc = " ```rust")]
-#![cfg_attr(not(feature = "std"), doc = " ```rust,compile_fail")]
+//! ```rust
 //! // foo crate:
 //!
 //! custom_print::define_macros!(
