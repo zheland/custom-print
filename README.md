@@ -96,6 +96,31 @@ fn main() {
 }
 ```
 
+Macro generation macros support specifying custom attributes, so you can
+re-export the generated macros and use them in other crates:
+```rust
+// foo crate:
+
+custom_print::define_macros!(
+    #[macro_export] { print, println, cprint, cprintln },
+    fmt, |_value: &str| { /* ... */ }
+);
+
+fn func() {
+    cprintln!("cprintln");
+    cprint!("cprint");
+}
+
+// bar crate:
+
+fn main() {
+    foo::println!("println");
+    foo::print!("print");
+}
+```
+
+You can find more usage examples in the tests and examples repository folders.
+
 ## Macro expansion
 
 The example with [`define_macros`] and [`define_init_panic_hook`] with extern functions:
