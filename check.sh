@@ -5,9 +5,9 @@ set -Eeuox pipefail
 FEATURES_SETS=(
     ""
     "--no-default-features"
-    '--no-default-features --features "alloc"'
-    '--no-default-features --features "std"'
-    '--no-default-features --features "alloc std"'
+    '--no-default-features --features alloc'
+    '--no-default-features --features std'
+    '--no-default-features --features alloc,std'
 )
 
 TOOLCHAINS=(
@@ -21,9 +21,9 @@ cargo +stable fmt --all -- --check
 
 for TOOLCHAIN in "${TOOLCHAINS[@]}"; do
     for FEATURES_SET in "${FEATURES_SETS[@]}"; do
-        cargo +$TOOLCHAIN clippy --all $FEATURES_SETS -- -D warnings
-        cargo +$TOOLCHAIN clippy --all --tests $FEATURES_SETS -- -D warnings
-        cargo +$TOOLCHAIN test --verbose --all
+        cargo +$TOOLCHAIN clippy --all $FEATURES_SET -- -D warnings
+        cargo +$TOOLCHAIN clippy --all --tests $FEATURES_SET -- -D warnings
+        cargo +$TOOLCHAIN test --verbose --all $FEATURES_SET
     done
     (
         cd ./tests/no-alloc
