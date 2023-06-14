@@ -62,7 +62,7 @@ macro_rules! _define_printlike_impl {
         $name:ident,
         $macro:path,
         $handler:tt,
-        $writer:expr
+        $( $writer:tt )*
     ) => {
         $( #[$meta] )*
         #[allow(unused_macros)]
@@ -71,10 +71,10 @@ macro_rules! _define_printlike_impl {
             // Issue: https://github.com/rust-lang/rustfmt/issues/4609
             /* ================================================================================== */
             () => {
-                $crate::write!($macro, $writer, $handler)
+                $crate::write!($macro, $( $writer )*, $handler)
             };
             ($d ($d args:tt)+) => {
-                $crate::write!($macro, $writer, $handler, $d ($d args)+)
+                $crate::write!($macro, $( $writer )*, $handler, $d ($d args)+)
             };
         }
     };

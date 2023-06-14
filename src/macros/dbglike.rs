@@ -75,7 +75,7 @@ macro_rules! _define_dbglike_impl {
         $macro:path,
         $handler:tt,
         $format:literal,
-        $writer:expr
+        $( $writer:tt )*
     ) => {
         $( #[$meta] )*
         #[allow(unused_macros)]
@@ -84,10 +84,10 @@ macro_rules! _define_dbglike_impl {
             // Issue: https://github.com/rust-lang/rustfmt/issues/4609
             /* ================================================================================== */
             () => {
-                $crate::dbgwrite!($macro, $writer, $handler, $format)
+                $crate::dbgwrite!($macro, $( $writer )*, $handler, $format)
             };
             ($d ($d args:tt)+) => {
-                $crate::dbgwrite!($macro, $writer, $handler, $format, $d ($d args)+)
+                $crate::dbgwrite!($macro, $( $writer )*, $handler, $format, $d ($d args)+)
             };
         }
     };
