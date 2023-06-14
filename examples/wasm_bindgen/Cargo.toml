@@ -10,7 +10,9 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wasm-bindgen = "0.2.86"
-custom-print = "0.1.0"
+
+[dependencies.custom-print]
+path = "../.."
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.36"
