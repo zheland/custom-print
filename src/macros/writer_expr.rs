@@ -19,6 +19,9 @@
 /// Note that writing using writer expression
 /// defined with `unsafe fn` or `extern `fn` do not require unsafe,
 /// so defining writer expression itself should be treated as an unsafe operation.
+///
+/// [`define_writer`]: macro.define_writer.htm
+/// [`define_try_writer`]: macro.define_try_writer.htm
 #[macro_export]
 macro_rules! define_writer_expr {
     ( unsafe fn $func:ident($ty1:ty) $( -> $ret:ty)? ) => {

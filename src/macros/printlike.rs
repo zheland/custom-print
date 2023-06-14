@@ -15,6 +15,8 @@
 /// assert_eq!(try_println!("second"), Ok(()));
 /// assert_eq!(string, "first\nsecond\n");
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
 #[macro_export]
 macro_rules! define_printlike {
     ( $name:ident, $macro:path, expect, $($args:tt)* ) => {

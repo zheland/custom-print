@@ -33,6 +33,11 @@
 /// [`ConcatWriter`]: struct.ConcatTryWriter.html
 /// [`FmtWriter`]: struct.FmtTryWriter.html
 /// [`IoWriter`]: struct.IoTryWriter.html
+/// [`define_writer_expr`]: macro.define_writer_expr.html
+/// [`define_try_writer`]: macro.define_try_writer.html
+/// [`define_printlike`]: macro.define_printlike.html
+/// [`define_dbglike`]: macro.define_dbglike.html
+/// [`define_flush`]: macro.define_flush.html
 #[macro_export]
 macro_rules! define_writer {
     ( concat, $($args:tt)* ) => {
@@ -86,6 +91,11 @@ macro_rules! define_writer {
 /// [`ConcatTryWriter`]: struct.ConcatTryWriter.html
 /// [`FmtTryWriter`]: struct.FmtTryWriter.html
 /// [`IoTryWriter`]: struct.IoTryWriter.html
+/// [`define_writer_expr`]: macro.define_writer_expr.html
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_printlike`]: macro.define_printlike.html
+/// [`define_dbglike`]: macro.define_dbglike.html
+/// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_try_writer {
     ( concat, $($args:tt)* ) => {

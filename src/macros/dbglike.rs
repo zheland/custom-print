@@ -23,6 +23,8 @@
 /// assert_eq!(try_dbg!("second"), Ok("second"));
 /// assert!(string.contains("\"second\""));
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
 #[macro_export]
 macro_rules! define_dbglike {
     ( $name:ident, $macro:path, expect, $format:literal, $($args:tt)* ) => {

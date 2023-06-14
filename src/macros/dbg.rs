@@ -21,6 +21,9 @@
 /// assert_eq!(cdbg!("value"), "value");
 /// assert!(string.contains("\"value\""));
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_try_dbg`]: macro.define_try_dbg.html
 #[macro_export]
 macro_rules! define_dbg {
     ( $name:ident, $($args:tt)* ) => {
@@ -52,6 +55,9 @@ macro_rules! define_dbg {
 /// assert_eq!(try_dbg!("value"), Ok("value"));
 /// assert!(string.contains("\"value\""));
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_dbg`]: macro.define_dbg.html
 #[macro_export]
 macro_rules! define_try_dbg {
     ( $name:ident, $($args:tt)* ) => {

@@ -146,6 +146,16 @@
 /// [`c_char`]: https://doc.rust-lang.org/std/os/raw/type.c_char.html
 /// [textual scope]: https://doc.rust-lang.org/nightly/reference/macros-by-example.html#scoping-exporting-and-importing
 /// [path-based scope]: https://doc.rust-lang.org/nightly/reference/macros-by-example.html#scoping-exporting-and-importing
+/// [`define_macro`]: macro.define_macro.html
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_print`]: macro.define_print.html
+/// [`define_println`]: macro.define_println.html
+/// [`define_dbg`]: macro.define_dbg.html
+/// [`define_flush`]: macro.define_flush.html
+/// [`define_try_print`]: macro.define_try_print.html
+/// [`define_try_println`]: macro.define_try_println.html
+/// [`define_try_dbg`]: macro.define_try_dbg.html
+/// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_macros {
     ( { $( $template:ident $(as $name:ident)? ),* $(,)? }, $($args:tt)* ) => {
@@ -308,6 +318,15 @@ macro_rules! _define_macros_impl {
 /// [`c_char`]: https://doc.rust-lang.org/std/os/raw/type.c_char.html
 /// [textual scope]: https://doc.rust-lang.org/nightly/reference/macros-by-example.html#scoping-exporting-and-importing
 /// [path-based scope]: https://doc.rust-lang.org/nightly/reference/macros-by-example.html#scoping-exporting-and-importing
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_print`]: macro.define_print.html
+/// [`define_println`]: macro.define_println.html
+/// [`define_dbg`]: macro.define_dbg.html
+/// [`define_flush`]: macro.define_flush.html
+/// [`define_try_print`]: macro.define_try_print.html
+/// [`define_try_println`]: macro.define_try_println.html
+/// [`define_try_dbg`]: macro.define_try_dbg.html
+/// [`define_try_flush`]: macro.define_try_flush.html
 #[macro_export]
 macro_rules! define_macro {
     ( print       as $name:ident, $($args:tt)* ) => {$crate::define_print!  ($name,$($args)*);};

@@ -14,6 +14,10 @@
 /// assert_eq!(cprint!("value"), ());
 /// assert_eq!(string, "value");
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_println`]: macro.define_println.html
+/// [`define_try_print`]: macro.define_try_print.html
 #[macro_export]
 macro_rules! define_print {
     ( $name:ident, $($args:tt)* ) => {
@@ -37,6 +41,10 @@ macro_rules! define_print {
 /// assert_eq!(cprintln!("value"), ());
 /// assert_eq!(string, "value\n");
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_print`]: macro.define_print.html
+/// [`define_try_println`]: macro.define_try_println.html
 #[macro_export]
 macro_rules! define_println {
     ( $name:ident, $($args:tt)* ) => {
@@ -60,6 +68,10 @@ macro_rules! define_println {
 /// assert_eq!(try_print!("value"), Ok(()));
 /// assert_eq!(string, "value");
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_print`]: macro.define_print.html
+/// [`define_try_println`]: macro.define_try_println.html
 #[macro_export]
 macro_rules! define_try_print {
     ( $name:ident, $($args:tt)* ) => {
@@ -84,6 +96,10 @@ macro_rules! define_try_print {
 /// assert_eq!(try_println!("value"), Ok(()));
 /// assert_eq!(string, "value\n");
 /// ```
+///
+/// [`define_writer`]: macro.define_writer.html
+/// [`define_println`]: macro.define_println.html
+/// [`define_try_print`]: macro.define_try_print.html
 #[macro_export]
 macro_rules! define_try_println {
     ( $name:ident, $($args:tt)* ) => {
